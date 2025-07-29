@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WednesVideoArchive</title>
     <style>
-        /* 全局样式 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -25,7 +24,6 @@
         }
         h1 {
             color: #2c3e50;
-            font-size: 2.5em;
         }
         .intro {
             background-color: white;
@@ -70,19 +68,10 @@
             width: 100%;
             max-width: 600px;
             border-radius: 5px;
+        }
+        .error-message {
+            color: #e74c3c;
             margin-top: 10px;
-        }
-        .video-fallback {
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #7f8c8d;
-        }
-        .video-fallback a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        .video-fallback a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -103,15 +92,28 @@
         <!-- 视频播放器 -->
         <div class="video-container">
             <div class="video-title">mc 购买成功界面旋转一分钟（水）</div>
-            <video controls>
-                <!-- 替换为你的 GitHub 视频 raw 链接 -->
-                <source src="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" type="video/mp4">
-                <!-- 备用下载链接（如果浏览器不支持视频播放） -->
-                <div class="video-fallback">
-                    您的浏览器不支持 HTML5 视频，请<a href="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" download>下载视频</a>。
+            <video id="videoPlayer" controls>
+                <!-- 方案1：使用 GitHub 的 raw 链接（需确保链接正确） -->
+                <source src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/video/mcround.mp4" type="video/mp4">
+                <!-- 方案2：备用 CDN 链接（如果 GitHub 链接被阻止） -->
+                <source src="https://github.com/Wednesxuan/wednesxuan.github.io/blob/main/video/mcround.mp4?raw=true" type="video/mp4">
+                <!-- 错误提示 -->
+                <div class="error-message">
+                    ⚠️ 无法加载视频：您的浏览器可能不支持该格式，或视频链接已失效。<br>
+                    尝试直接下载：<a href="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" download>点击下载</a>
                 </div>
             </video>
         </div>
     </div>
+
+    <!-- 调试脚本（仅开发阶段使用） -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('videoPlayer');
+            video.addEventListener('error', function() {
+                console.error('视频加载失败，错误代码：', video.error.code);
+            });
+        });
+    </script>
 </body>
 </html>
