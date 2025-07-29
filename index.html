@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WednesVideoArchive</title>
     <style>
+        /* 全局样式 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #f5f5f5;
             color: #333;
         }
         .container {
@@ -26,26 +27,22 @@
             color: #2c3e50;
             font-size: 2.5em;
         }
-           <div class="video-container">
-       <h3>mc购买成功界面旋转一分钟（水）</h3>
-       <video controls width="100%" style="max-width: 600px;">
-           <source src="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" type="video/mp4">
-           您的浏览器不支持 HTML5 视频，请<a href="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4">下载视频</a>。
-       </video>
-   </div>
-   
         .intro {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
         }
         .home-button {
             display: inline-block;
+            padding: 10px 20px;
             background-color: #3498db;
             color: white;
-            padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
@@ -54,8 +51,38 @@
         .home-button:hover {
             background-color: #2980b9;
         }
-        .button-container {
+
+        /* 视频容器样式 */
+        .video-container {
             text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .video-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .video-fallback {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .video-fallback a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .video-fallback a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -64,13 +91,26 @@
         <header>
             <h1>WednesVideoArchive</h1>
         </header>
-        
+
         <div class="intro">
-            <p>欢迎来到由Github Pages制作的网站，这里会存有一些我自己或者是其他人的视频，目前还是雏形，靠ai建设此网页</p>
+            <p>欢迎来到由 GitHub Pages 制作的网站，这里会存有一些我自己或者是其他人的视频。</p>
         </div>
-        
+
         <div class="button-container">
             <a href="https://space.bilibili.com/1857864561" class="home-button" target="_blank">作者主页</a>
+        </div>
+
+        <!-- 视频播放器 -->
+        <div class="video-container">
+            <div class="video-title">mc 购买成功界面旋转一分钟（水）</div>
+            <video controls>
+                <!-- 替换为你的 GitHub 视频 raw 链接 -->
+                <source src="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" type="video/mp4">
+                <!-- 备用下载链接（如果浏览器不支持视频播放） -->
+                <div class="video-fallback">
+                    您的浏览器不支持 HTML5 视频，请<a href="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" download>下载视频</a>。
+                </div>
+            </video>
         </div>
     </div>
 </body>
