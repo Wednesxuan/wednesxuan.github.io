@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.0.2.86-lite
 // @description  美化B站播放页画质选项（完全去除圆角，始终直角）
-// @author       You
+// @author       none
 // @match        *://*.bilibili.com/video/*
 // @match        *://bilibili.com/video/*
 // @grant        GM_xmlhttpRequest
