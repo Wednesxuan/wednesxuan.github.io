@@ -1746,7 +1746,7 @@
     }
 
     // ============================================================
-    // 15. 关于界面（已按要求修改）
+    // 15. 关于界面
     // ============================================================
     function showAboutDialog() {
         const overlay = document.createElement('div');
@@ -1778,11 +1778,11 @@
         box.appendChild(author);
 
         const version = document.createElement('div');
-        version.textContent = '当前版本 v1.0.2.86-lite';
+        version.textContent = '当前版本 v1.0.2.86';
         version.style.cssText = 'text-align:center;color:#888;font-size:14px;margin-bottom:12px;';
         box.appendChild(version);
 
-        // 按钮“存放地”
+        // 存放地
         const btnContainer = document.createElement('div');
         btnContainer.style.cssText = 'text-align:center;margin-top:10px;';
         const linkBtn = document.createElement('a');
