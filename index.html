@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WednesVideoArchive/n/文斯视频存档馆</title>
+    <title>Wednesxuan的小网站</title>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,107 +14,204 @@
             background-color: #f5f5f5;
             color: #333;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
+
         header {
             text-align: center;
             margin-bottom: 30px;
         }
+
         h1 {
             color: #2c3e50;
         }
+
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
         .intro {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
+
         .button-container {
             text-align: center;
             margin: 20px 0;
         }
+
         .home-button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .home-button:hover {
-            background-color: #2980b9;
+            transition: 0.3s;
         }
 
-        /* 视频容器样式 */
+        .bilibili-button {
+            background-color: #00aeec;
+        }
+
+        .bilibili-button:hover {
+            background-color: #008ccf;
+        }
+
+        .douyin-button {
+            background-color: #111;
+            border: 1px solid #ff0050;
+        }
+
+        .douyin-button:hover {
+            background-color: #ff0050;
+        }
+
         .video-container {
             text-align: center;
             margin: 30px 0;
             padding: 20px;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
         .video-title {
             font-size: 1.2em;
             margin-bottom: 15px;
             color: #2c3e50;
         }
+
         video {
             width: 100%;
             max-width: 600px;
             border-radius: 5px;
         }
-        .error-message {
-            color: #e74c3c;
-            margin-top: 10px;
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
+
+
 <body>
-    <div class="container">
-        <header>
-            <h1>WednesVideoArchive/n/文斯视频存档馆</h1>
-        </header>
 
-        <div class="intro">
-            <p>欢迎来到由 GitHub Pages 制作的网站，这里会存有一些我自己或者是其他人的视频/n/目前比较简陋，还在靠AI添加代码/n/此处视频大小应该不超过100MB，如果超过了请前往我的github下载</p>
-        </div>
+<div class="container">
 
-        <div class="button-container">
-            <a href="https://space.bilibili.com/1857864561" class="home-button" target="_blank">作者主页</a>
-        </div>
+    <header>
+        <h1>Wednesxuan的小网站</h1>
+    </header>
 
-        <!-- 视频播放器 -->
-        <div class="video-container">
-            <div class="video-title">mc 购买成功界面旋转一分钟（水）</div>
-            <video id="videoPlayer" controls>
-                <!-- 方案1：使用 GitHub 的 raw 链接（需确保链接正确） -->
-                <source src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/blob/main/video/self-made/mcround.mp4" type="video/mp4">
-                <!-- 方案2：备用 CDN 链接（如果 GitHub 链接被阻止） -->
-                <source src="https://github.com/Wednesxuan/wednesxuan.github.io/blob/main/video/self-made/mcround.mp4?raw=true" type="video/mp4">
-                <!-- 错误提示 -->
-                <div class="error-message">
-                    ⚠️ 无法加载视频：您的浏览器可能不支持该格式，或视频链接已失效。<br>
-                    尝试直接下载：<a href="https://github.com/Wednesxuan/wednesxuan.github.io/raw/main/video/mcround.mp4" download>点击下载</a>
-                </div>
-            </video>
-        </div>
+
+    <div class="intro">
+        <p>一个小网站，存放着一些小东西</p>
     </div>
 
-    <!-- 调试脚本（仅开发阶段使用） -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('videoPlayer');
-            video.addEventListener('error', function() {
-                console.error('视频加载失败，错误代码：', video.error.code);
-            });
-        });
-    </script>
+
+    <!-- 视频区域 -->
+    <div class="video-container">
+
+        <div class="video-title">
+            一个视频
+        </div>
+
+        <video id="videoPlayer" controls>
+            <source src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/video/self-made/mcround.mp4" type="video/mp4">
+
+            ⚠️ 无法加载视频
+        </video>
+
+    </div>
+
+
+
+    <!-- 小东西区域 -->
+    <div class="intro">
+
+        <h2>一些小东西</h2>
+
+
+        <div class="button-container">
+
+            <a class="home-button bilibili-button"
+               href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BBP/BetterBilibiliPlayer1.0.2.90.js"
+               target="_blank">
+
+                Better Bilibili Player
+
+            </a>
+
+        </div>
+
+
+
+        <div class="button-container">
+
+            <a class="home-button douyin-button"
+               href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BDP/BetterDouyinPlayer1.3.5.18.js"
+               target="_blank">
+
+                Better Douyin Player
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <footer>
+
+        建立这个网站的作者：
+        <a href="https://space.bilibili.com/1857864561" target="_blank">
+            Wednesxuan
+        </a>
+
+    </footer>
+
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+    const video = document.getElementById('videoPlayer');
+
+    video.addEventListener('error', function(){
+
+        console.error(
+            '视频加载失败:',
+            video.error
+        );
+
+    });
+
+});
+</script>
+
+
 </body>
 </html>
