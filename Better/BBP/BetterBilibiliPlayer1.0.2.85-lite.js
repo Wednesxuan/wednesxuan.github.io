@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         BetterBilibiliPlayer
-// @namespace    http://tampermonkey.net/
+// @namespace    https://www.bilibili.com/
 // @version      1.0.2.86-lite
 // @description  美化B站播放页画质选项（完全去除圆角，始终直角）
 // @author       none
