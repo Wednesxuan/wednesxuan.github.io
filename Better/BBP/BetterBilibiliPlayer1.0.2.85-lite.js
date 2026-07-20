@@ -6,10 +6,7 @@
 // @author       none
 // @match        *://*.bilibili.com/video/*
 // @match        *://bilibili.com/video/*
-// @grant        GM_xmlhttpRequest
 // @grant        unsafeWindow
-// @grant        GM_download
-// @connect      api.bilibili.com
 // @run-at       document-idle
 // ==/UserScript==
 
