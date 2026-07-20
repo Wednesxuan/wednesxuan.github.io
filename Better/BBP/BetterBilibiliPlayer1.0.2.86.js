@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterBilibiliPlayer
 // @namespace    https://www.bilibili.com/
-// @version      1.0.2.86-lite
+// @version      1.0.2.86
 // @description  对B站播放页的一些界面的美化
 // @author       none
 // @match        *://*.bilibili.com/video/*
