@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterBilibiliPlayer
 // @namespace    https://www.bilibili.com/
-// @version      1.0.2.86
+// @version      1.0.2.90
 // @description  对B站播放页的一些界面的美化
 // @author       none
 // @match        *://*.bilibili.com/video/*
@@ -16,13 +16,13 @@
     if (!location.pathname.startsWith('/video/')) return;
 
     // ============================================================
-    // 彩色日志
+    // 彩色日志（正文颜色为黑色）
     // ============================================================
     function log(m, t) {
         const c = { info: '#00aece', success: '#52c41a', warn: '#faad14', error: '#f5222d', start: '#8b5cf6', done: '#06b6d4' };
         const bc = c[t] || c.info;
         const badge = t === 'start' ? '启动' : t === 'done' ? '完成' : t === 'success' ? '成功' : t === 'warn' ? '⚠️' : t === 'error' ? '❌' : '信息';
-        console.log(`%c[BetterBilibiliPlayer]%c ${badge} %c${m}`, `color:#fff;background:${bc};padding:2px 6px;border-radius:3px 0 0 3px;font-weight:bold;`, `color:#fff;background:${bc};padding:2px 4px;border-radius:0 3px 3px 0;font-weight:bold;opacity:.8;`, `color:#e5e7eb;font-weight:500;`);
+        console.log(`%c[BetterBilibiliPlayer]%c ${badge} %c${m}`, `color:#fff;background:${bc};padding:2px 6px;border-radius:3px 0 0 3px;font-weight:bold;`, `color:#fff;background:${bc};padding:2px 4px;border-radius:0 3px 3px 0;font-weight:bold;opacity:.8;`, `color:#000000;font-weight:500;`);
     }
 
     // ============================================================
@@ -35,7 +35,7 @@
         debugMode: false,
         qualityPreference: '1080P',
         audioPreference: '高',
-        ambientLight: false,
+        // ambientLight 不再作为用户设置，但保留用于内部
         bgTint: false,
         edgeGlow: false,
         glowWidth: 10,
@@ -55,10 +55,15 @@
         if (s.bgTint === undefined) s.bgTint = false;
         if (s.edgeGlow === undefined) s.edgeGlow = false;
         if (s.glowWidth === undefined) s.glowWidth = 10;
+        // 强制开启环境光（内部功能，不暴露开关）
+        s.ambientLight = true;
         return s;
     }
     function saveSettings() {
-        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+        // 保存时去掉 ambientLight 字段，避免覆盖
+        const toSave = { ...settings };
+        delete toSave.ambientLight;
+        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(toSave)); } catch (e) {}
     }
 
     // ============================================================
@@ -78,6 +83,7 @@
     let debugLogs = [];
     let debugLogContainer = null;
     let autoSwitchDone = false;
+    let currentPageBvid = getBvid();
 
     let nw, ni, nc, ncb, nti;
 
@@ -733,7 +739,7 @@
     }
 
     // ============================================================
-    // 9. 通知系统
+    // 9. 通知系统（GPU加速优化，动画效果不变）
     // ============================================================
     function initNotification(container) {
         if (!container) container = getPlayerContainer() || document.body;
@@ -745,7 +751,7 @@
         container.appendChild(nw);
 
         ni = document.createElement('div');
-        ni.style.cssText = 'width:0;overflow:hidden;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);border-radius:8px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 2px 10px rgba(0,0,0,0.3);box-sizing:border-box;display:flex;align-items:stretch;transition:width 0.4s cubic-bezier(0.25,0.1,0.25,1);';
+        ni.style.cssText = 'width:0;overflow:hidden;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);border-radius:8px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 2px 10px rgba(0,0,0,0.3);box-sizing:border-box;display:flex;align-items:stretch;transition:width 0.4s cubic-bezier(0.25,0.1,0.25,1);will-change:transform,width;transform:translateZ(0);';
         nw.appendChild(ni);
 
         ncb = document.createElement('span');
@@ -786,29 +792,28 @@
             const colors = { success: '#4caf50', error: '#f44336', loading: '#ff9800' };
             const bg = colors[type] || 'transparent';
 
-            if (cw > 0) {
-                ncb.style.display = 'none';
-                ni.style.transition = 'width ' + sd + 's cubic-bezier(0.42,0,0.58,1)';
-                ni.style.width = '0';
-                setTimeout(function() {
-                    nc.textContent = text;
-                    ncb.style.backgroundColor = bg;
-                    ncb.style.display = 'block';
+            const setContent = function() {
+                nc.textContent = text;
+                ncb.style.backgroundColor = bg;
+                ncb.style.display = 'block';
+                requestAnimationFrame(function() {
                     ni.style.transition = 'width ' + ed + 's cubic-bezier(0.25,0.1,0.25,1)';
                     const tw = nc.scrollWidth + 4 + 36;
                     ni.style.width = tw + 'px';
                     resolve();
                     clearNotification(5000);
+                });
+            };
+
+            if (cw > 0) {
+                ncb.style.display = 'none';
+                ni.style.transition = 'width ' + sd + 's cubic-bezier(0.42,0,0.58,1)';
+                ni.style.width = '0';
+                setTimeout(function() {
+                    setContent();
                 }, sd * 1000 + 50);
             } else {
-                nc.textContent = text;
-                ncb.style.backgroundColor = bg;
-                ncb.style.display = 'block';
-                ni.style.transition = 'width ' + ed + 's cubic-bezier(0.25,0.1,0.25,1)';
-                const tw = nc.scrollWidth + 4 + 36;
-                ni.style.width = tw + 'px';
-                resolve();
-                clearNotification(5000);
+                setContent();
             }
         });
     }
@@ -1325,7 +1330,7 @@
     }
 
     // ============================================================
-    // 13. 设置面板
+    // 13. 设置面板（精简环境相关设置：背景发光 + 播放器边缘发光）
     // ============================================================
     function enterSettingsMode(panel) {
         if (isSettingsMode) return;
@@ -1423,7 +1428,7 @@
     }
 
     // ============================================================
-    // 14. 渲染设置内容
+    // 14. 渲染设置内容（环境光已移除，只有背景发光和播放器边缘发光）
     // ============================================================
     function renderSettingsContent(container, panel, titleElement) {
         container.innerHTML = '';
@@ -1578,54 +1583,21 @@
         debugItem.appendChild(debugToggle);
         container.appendChild(debugItem);
 
-        // ---- 环境光与边缘流光 ----
+        // ---- 环境相关设置（仅两项） ----
         const ambientSection = document.createElement('div');
         ambientSection.style.cssText = 'margin-bottom:12px; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;';
 
         const ambientTitle = document.createElement('div');
-        ambientTitle.textContent = '环境光与边缘流光';
+        ambientTitle.textContent = '环境与边缘';
         ambientTitle.style.cssText = 'font-size:13px; margin-bottom:8px; color:#ccc; font-weight:bold;';
         ambientSection.appendChild(ambientTitle);
 
-        // 环境光背景开关
-        const ambientRow = document.createElement('div');
-        ambientRow.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;';
-        const ambientLabel = document.createElement('span');
-        ambientLabel.textContent = '环境光背景';
-        ambientLabel.style.color = '#aaa';
-        ambientLabel.style.fontSize = '12px';
-        ambientRow.appendChild(ambientLabel);
-
-        const ambientToggle = document.createElement('button');
-        ambientToggle.textContent = settings.ambientLight ? '开' : '关';
-        ambientToggle.style.cssText = `padding:2px 12px; border-radius:4px; border:none; background:${settings.ambientLight ? '#00A1D6' : 'rgba(255,255,255,0.2)'}; color:#fff; cursor:pointer; font-size:12px;`;
-        ambientToggle.onclick = (e) => {
-            e.stopPropagation();
-            settings.ambientLight = !settings.ambientLight;
-            saveSettings();
-            ambientToggle.textContent = settings.ambientLight ? '开' : '关';
-            ambientToggle.style.background = settings.ambientLight ? '#00A1D6' : 'rgba(255,255,255,0.2)';
-            if (settings.ambientLight) {
-                startAmbientLight();
-            } else {
-                stopAmbientLight();
-            }
-            const bgRow = ambientSection.querySelector('.bg-tint-row');
-            if (bgRow) {
-                const bgBtn = bgRow.querySelector('button');
-                if (bgBtn) bgBtn.disabled = !settings.ambientLight;
-            }
-            showNotification('环境光背景已' + (settings.ambientLight ? '开启' : '关闭'), 'success');
-        };
-        ambientRow.appendChild(ambientToggle);
-        ambientSection.appendChild(ambientRow);
-
-        // 背景染色（依赖环境光）
+        // 背景发光（原背景染色）
         const bgRow = document.createElement('div');
         bgRow.className = 'bg-tint-row';
         bgRow.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;';
         const bgLabel = document.createElement('span');
-        bgLabel.textContent = '背景染色';
+        bgLabel.textContent = '背景发光';
         bgLabel.style.color = '#aaa';
         bgLabel.style.fontSize = '12px';
         bgRow.appendChild(bgLabel);
@@ -1634,13 +1606,8 @@
         bgToggle.className = 'bg-tint-toggle';
         bgToggle.textContent = settings.bgTint ? '开' : '关';
         bgToggle.style.cssText = `padding:2px 12px; border-radius:4px; border:none; background:${settings.bgTint ? '#00A1D6' : 'rgba(255,255,255,0.2)'}; color:#fff; cursor:pointer; font-size:12px;`;
-        if (!settings.ambientLight) bgToggle.disabled = true;
         bgToggle.onclick = (e) => {
             e.stopPropagation();
-            if (!settings.ambientLight) {
-                showNotification('请先开启环境光背景', 'error');
-                return;
-            }
             settings.bgTint = !settings.bgTint;
             saveSettings();
             bgToggle.textContent = settings.bgTint ? '开' : '关';
@@ -1650,16 +1617,16 @@
             } else {
                 stopBgTint();
             }
-            showNotification('背景染色已' + (settings.bgTint ? '开启' : '关闭'), 'success');
+            showNotification('背景发光已' + (settings.bgTint ? '开启' : '关闭'), 'success');
         };
         bgRow.appendChild(bgToggle);
         ambientSection.appendChild(bgRow);
 
-        // 边缘流光（独立开关）
+        // 播放器边缘发光（原边缘流光）
         const edgeRow = document.createElement('div');
         edgeRow.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;';
         const edgeLabel = document.createElement('span');
-        edgeLabel.textContent = '边缘流光';
+        edgeLabel.textContent = '播放器边缘发光';
         edgeLabel.style.color = '#aaa';
         edgeLabel.style.fontSize = '12px';
         edgeRow.appendChild(edgeLabel);
@@ -1684,7 +1651,7 @@
                 if (slider) slider.disabled = !settings.edgeGlow;
                 sliderRow.style.opacity = settings.edgeGlow ? '1' : '0.4';
             }
-            showNotification('边缘流光已' + (settings.edgeGlow ? '开启' : '关闭'), 'success');
+            showNotification('播放器边缘发光已' + (settings.edgeGlow ? '开启' : '关闭'), 'success');
         };
         edgeRow.appendChild(edgeToggle);
         ambientSection.appendChild(edgeRow);
@@ -1746,7 +1713,7 @@
     }
 
     // ============================================================
-    // 15. 关于界面
+    // 15. 关于界面（存放地链接已更新）
     // ============================================================
     function showAboutDialog() {
         const overlay = document.createElement('div');
@@ -1778,15 +1745,15 @@
         box.appendChild(author);
 
         const version = document.createElement('div');
-        version.textContent = '当前版本 v1.0.2.86';
+        version.textContent = '当前版本 v1.0.2.90';
         version.style.cssText = 'text-align:center;color:#888;font-size:14px;margin-bottom:12px;';
         box.appendChild(version);
 
-        // 存放地
+        // 按钮“存放地”
         const btnContainer = document.createElement('div');
         btnContainer.style.cssText = 'text-align:center;margin-top:10px;';
         const linkBtn = document.createElement('a');
-        linkBtn.href = 'https://github.com/Wednesxuan/wednesxuan.github.io/tree/main/Better';
+        linkBtn.href = 'https://github.com/Wednesxuan/wednesxuan.github.io/tree/main/Better/BBP';
         linkBtn.target = '_blank';
         linkBtn.textContent = '存放地';
         linkBtn.style.cssText = `
@@ -1817,7 +1784,7 @@
     }
 
     // ============================================================
-    // 16. 环境光与边缘流光（单层全屏背景 + box-shadow 流光）
+    // 16. 环境光与边缘流光（环境光默认开启，背景发光和边缘发光独立控制）
     // ============================================================
     let ambientTimer = null;
     let ambientRAFId = null;
@@ -1889,10 +1856,9 @@
         }
     }
 
-    // 环境光单层背景
+    // 环境光单层背景（始终运行，但背景发光和边缘发光由开关控制）
     function startAmbientLight(retryCount = 0) {
-        if (!settings.ambientLight) return;
-
+        // 环境光始终开启，不再检查开关
         const container = findPlayerContainerForAmbient();
         if (!container) {
             if (retryCount < 20) {
@@ -1908,8 +1874,7 @@
         if (getComputedStyle(container).position === 'static') {
             container.style.position = 'relative';
         }
-        // 注意：容器 overflow 不设为 hidden，因为无圆角，无需裁剪
-        // 保留默认
+        container.style.overflow = 'hidden';
 
         // 创建背景层
         if (!ambientBgLayer) {
@@ -1925,7 +1890,7 @@
                 opacity: ${AMBIENT_CONFIG.opacity};
                 transition: ${AMBIENT_CONFIG.transition};
                 background: rgba(30,30,30,0.5);
-                border-radius: 0; /* 直角 */
+                border-radius: inherit;
             `;
             container.insertBefore(ambientBgLayer, container.firstChild);
         }
@@ -1977,16 +1942,23 @@
                     ambientBgLayer.style.background = `rgb(${r}, ${g}, ${b})`;
                 }
 
+                // 边缘发光由独立开关控制
                 if (settings.edgeGlow) {
                     updateEdgeGlow();
                 }
 
+                // 背景发光由独立开关控制
                 if (settings.bgTint) {
                     const lum = (r * 299 + g * 587 + b * 114) / 1000;
                     const alpha = lum < 128 ? AMBIENT_CONFIG.bgTintAlpha : AMBIENT_CONFIG.bgTintAlpha * 1.2;
                     const target = getBackgroundTarget();
                     target.style.setProperty('background-color', `rgba(${r}, ${g}, ${b}, ${alpha})`, 'important');
                     target.style.setProperty('transition', AMBIENT_CONFIG.transition, 'important');
+                } else {
+                    // 如果背景发光关闭，清除背景色
+                    const target = getBackgroundTarget();
+                    target.style.removeProperty('background-color');
+                    target.style.removeProperty('transition');
                 }
             } catch (_) {}
         }
@@ -2041,6 +2013,25 @@
 
     function startBgTint() {
         bgTintActive = true;
+        // 立即应用一次
+        if (ambientCtx) {
+            const video = document.querySelector('video');
+            if (video && video.videoWidth > 0) {
+                // 触发一次采样更新
+                const container = findPlayerContainerForAmbient();
+                if (container) {
+                    // 模拟采样
+                    const r = currentEdgeColor.r || 30;
+                    const g = currentEdgeColor.g || 30;
+                    const b = currentEdgeColor.b || 30;
+                    const lum = (r * 299 + g * 587 + b * 114) / 1000;
+                    const alpha = lum < 128 ? AMBIENT_CONFIG.bgTintAlpha : AMBIENT_CONFIG.bgTintAlpha * 1.2;
+                    const target = getBackgroundTarget();
+                    target.style.setProperty('background-color', `rgba(${r}, ${g}, ${b}, ${alpha})`, 'important');
+                    target.style.setProperty('transition', AMBIENT_CONFIG.transition, 'important');
+                }
+            }
+        }
     }
 
     function stopBgTint() {
@@ -2068,7 +2059,7 @@
     }
 
     // ============================================================
-    // 18. 全局样式（完全去除圆角）
+    // 18. 全局样式（完全直角）
     // ============================================================
     const styleEl = document.createElement('style');
     styleEl.textContent = `
@@ -2087,13 +2078,11 @@
         video {
             border-radius: 0 !important;
         }
-        /* 保留容器 overflow 默认（不隐藏） */
         .bpx-player-container {
             overflow: visible !important;
             transition: none !important;
         }
 
-        /* 视频背景透明 */
         video {
             background: transparent !important;
         }
@@ -2250,21 +2239,24 @@
         if (window._bbvs_router_observed) return;
         window._bbvs_router_observed = true;
         let lastUrl = location.href;
+        let lastBvid = getBvid();
         const observer = new MutationObserver(() => {
             if (location.href !== lastUrl) {
                 lastUrl = location.href;
                 if (location.pathname.startsWith('/video/')) {
-                    log('检测到视频单页跳转，重新初始化...', 'info');
-                    if (globalClosePanel) globalClosePanel();
-                    if (currentPanel) {
-                        currentPanel = null;
+                    const newBvid = getBvid();
+                    if (newBvid !== lastBvid) {
+                        lastBvid = newBvid;
+                        log('检测到视频切换，重置状态并刷新面板', 'info');
+                        autoSwitchDone = false;
+                        if (currentPanel && globalClosePanel) {
+                            globalClosePanel();
+                        }
+                        // 重置相关数据
+                        currentQuality = null;
+                        // 重新初始化（触发自动切换和环境光重新启动）
+                        init();
                     }
-                    if (qualityButton) {
-                        qualityButton = null;
-                    }
-                    currentQuality = null;
-                    autoSwitchDone = false;
-                    init();
                 }
             }
         });
@@ -2287,15 +2279,16 @@
             window._bbvs_handler_registered = true;
         }
 
-        if (settings.ambientLight) {
-            log('环境光已启用，等待播放器就绪...', 'info');
-            await waitForPlayerContainer();
-            setTimeout(() => {
-                log('环境光正在启动...', 'info');
-                startAmbientLight();
-            }, 300);
-        } else if (settings.edgeGlow) {
-            currentEdgeColor = { r: 80, g: 80, b: 80 };
+        // 环境光始终启动（不提供开关）
+        log('环境光正在启动...', 'info');
+        // 先停止旧的，再启动新的
+        stopAmbientLight();
+        setTimeout(() => {
+            startAmbientLight();
+        }, 300);
+
+        // 如果边缘发光已开启，应用一次
+        if (settings.edgeGlow) {
             setTimeout(() => updateEdgeGlow(), 500);
         }
 
