@@ -2,7 +2,7 @@
 // @name         BetterBilibiliPlayer
 // @namespace    https://www.bilibili.com/
 // @version      1.0.2.86-lite
-// @description  美化B站播放页画质选项（完全去除圆角，始终直角）
+// @description  对B站播放页的一些界面的美化
 // @author       none
 // @match        *://*.bilibili.com/video/*
 // @match        *://bilibili.com/video/*
