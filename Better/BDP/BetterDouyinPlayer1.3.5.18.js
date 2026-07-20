@@ -802,7 +802,7 @@
     }
 
     // ============================================================
-    // 13. 调试面板（去掉扳手表情，标签改“已预加载时长”）
+    // 13. 调试面板
     // ============================================================
     function createDebugOverlay() {
         if (debugOverlay) return;
@@ -918,7 +918,7 @@
     }
 
     // ============================================================
-    // 14. 更新调试信息（使用真实码率，无平滑，实时显示速度）
+    // 14. 更新调试信息
     // ============================================================
     function updateDebugInfo() {
         const video = document.querySelector('video');
@@ -1108,7 +1108,7 @@
     }
 
     // ============================================================
-    // 16. 设置面板（含“关于”界面，新图标，文案调整）
+    // 16. 设置面板
     // ============================================================
     function showAboutDialog() {
         const overlay = document.createElement('div');
@@ -1124,13 +1124,13 @@
         closeBtn.onclick = function() { document.body.removeChild(overlay); };
         container.appendChild(closeBtn);
 
-        // 标题（保留）
+        // 标题
         const title = document.createElement('h1');
         title.textContent = 'BetterDouyinPlayer';
         title.style.cssText = 'font-size:22px;font-weight:bold;text-align:center;color:#fff;margin:0 0 16px 0;';
         container.appendChild(title);
 
-        // 作者的话（无标题）
+        // 作者的话
         const storyText = document.createElement('p');
         storyText.style.cssText = 'color:#ccc;font-size:14px;line-height:1.6;margin:0 0 12px 0;';
         storyText.textContent = '用AI写的JavaScript脚本，美化一些选项，并在某些设备上使用更高的画质观看或下载视频';
@@ -1142,7 +1142,7 @@
         version.style.cssText = 'text-align:center;color:#666;font-size:12px;margin:16px 0 0 0;';
         container.appendChild(version);
 
-        // “存放地”按钮（绿色）
+        // 脚本地址
         const btnContainer = document.createElement('div');
         btnContainer.style.cssText = 'text-align:center;margin-top:12px;';
         const linkBtn = document.createElement('a');
@@ -1212,7 +1212,7 @@
         container.style.paddingRight = '4px';
 
         const items = [
-            { label: '编码方式偏好', hint: '优先播放/下载此编码格式，若无则回退。HEVC(H.265) 压缩率更高，AVC(H.264) 兼容性更好。\n如果你使用的是2017年以后的设备建议使用HEVC格式，抖音2K及以上以及高帧率视频仅提供HEVC格式', type: 'codec', value: settings.codecPreference },
+            { label: '编码方式偏好', hint: '优先播放/下载此编码格式，若无则回退。HEVC(H.265) 压缩率更高，AVC(H.264) 兼容性更好。\n如果你使用的是较新的设备建议使用HEVC格式，抖音2K及以上与高帧率视频仅提供HEVC格式', type: 'codec', value: settings.codecPreference },
             { label: '视频画质偏好', hint: '脚本将在页面加载时自动切换到该画质（优先高帧率、高码率）。', type: 'quality', value: settings.qualityPreference },
             { label: '显示更多视频流', hint: '开启后展示分辨率、编码方式一致但码率不同的多个视频流。', type: 'switch', key: 'showMoreStreams', value: settings.showMoreStreams },
             { label: '模糊效果', hint: '启用该设置后，控制面板与通知栏将会有模糊效果，可能影响性能', type: 'switch', key: 'blurEffect', value: settings.blurEffect },
@@ -1358,7 +1358,7 @@
             container.appendChild(div);
         });
 
-        // “关于”按钮（无书本表情）
+        // 关于
         const aboutRow = document.createElement('div');
         aboutRow.style.cssText = 'padding:8px 0 4px 0; display:flex; justify-content:center;';
         const aboutBtn = document.createElement('button');
@@ -1516,7 +1516,7 @@
     }
 
     // ============================================================
-    // 18. 画质面板渲染（无第三方解析条目，下载仅视频）
+    // 18. 画质面板渲染
     // ============================================================
     function renderQualityList(containerEl, data) {
         containerEl.innerHTML = '';
