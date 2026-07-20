@@ -1,217 +1,409 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wednesxuan的小网站</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+<title>Wednesxuan的小网站</title>
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<style>
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
 
-        h1 {
-            color: #2c3e50;
-        }
 
-        h2 {
-            color: #2c3e50;
-            text-align: center;
-        }
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
 
-        .intro {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
 
-        .button-container {
-            text-align: center;
-            margin: 20px 0;
-        }
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        .home-button {
-            display: inline-block;
-            padding: 10px 20px;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
 
-        .bilibili-button {
-            background-color: #00aeec;
-        }
+h1 {
+    color:#2c3e50;
+}
 
-        .bilibili-button:hover {
-            background-color: #008ccf;
-        }
 
-        .douyin-button {
-            background-color: #111;
-            border: 1px solid #ff0050;
-        }
+h2 {
+    color:#2c3e50;
+    text-align:center;
+}
 
-        .douyin-button:hover {
-            background-color: #ff0050;
-        }
 
-        .video-container {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
 
-        .video-title {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
+.intro,
+.video-container {
 
-        video {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 5px;
-        }
+    background:white;
 
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #999;
-            font-size: 14px;
-        }
+    padding:20px;
 
-        footer a {
-            color: #999;
-            text-decoration: none;
-        }
+    border-radius:8px;
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    box-shadow:0 2px 4px rgba(0,0,0,0.1);
+
+    margin-bottom:30px;
+
+}
+
+
+
+.button-container {
+
+    margin:20px 0;
+
+}
+
+
+
+.home-button {
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:5px;
+
+    font-weight:bold;
+
+    transition:0.3s;
+
+}
+
+
+
+.bilibili-button {
+
+    background:#00aeec;
+
+}
+
+
+.bilibili-button:hover {
+
+    background:#008ccf;
+
+}
+
+
+
+.douyin-button {
+
+    background:#111;
+
+    border:1px solid #ff0050;
+
+}
+
+
+
+.douyin-button:hover {
+
+    background:#ff0050;
+
+}
+
+
+
+
+.video-title {
+
+    text-align:center;
+
+    font-size:1.2em;
+
+    color:#2c3e50;
+
+    margin-bottom:15px;
+
+}
+
+
+
+video {
+
+    width:100%;
+
+    max-width:600px;
+
+    display:block;
+
+    margin:auto;
+
+    border-radius:5px;
+
+}
+
+
+
+.tool-item {
+
+    margin:25px 0;
+
+}
+
+
+
+.tool-item p {
+
+    margin-top:10px;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+
+
+footer {
+
+    text-align:center;
+
+    margin-top:40px;
+
+    color:#999;
+
+    font-size:14px;
+
+}
+
+
+footer a {
+
+    color:#999;
+
+    text-decoration:none;
+
+}
+
+
+footer a:hover {
+
+    text-decoration:underline;
+
+}
+
+
+</style>
+
 </head>
 
 
 <body>
 
+
 <div class="container">
 
-    <header>
-        <h1>Wednesxuan的小网站</h1>
-    </header>
 
+<header>
 
-    <div class="intro">
-        <p>一个小网站，存放着一些小东西</p>
-    </div>
+<h1>Wednesxuan的小网站</h1>
 
-
-    <!-- 视频区域 -->
-    <div class="video-container">
-
-        <div class="video-title">
-            一个视频
-        </div>
-
-        <video id="videoPlayer" controls>
-            <source src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/video/self-made/mcround.mp4" type="video/mp4">
-
-            ⚠️ 无法加载视频
-        </video>
-
-    </div>
+</header>
 
 
 
-    <!-- 小东西区域 -->
-    <div class="intro">
+<div class="intro">
 
-        <h2>一些小东西</h2>
+<p>
+一个小网站，存放着一些小东西
+</p>
 
-
-        <div class="button-container">
-
-            <a class="home-button bilibili-button"
-               href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BBP/BetterBilibiliPlayer1.0.2.90.js"
-               target="_blank">
-
-                Better Bilibili Player
-
-            </a>
-
-        </div>
+</div>
 
 
 
-        <div class="button-container">
-
-            <a class="home-button douyin-button"
-               href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BDP/BetterDouyinPlayer1.3.5.18.js"
-               target="_blank">
-
-                Better Douyin Player
-
-            </a>
-
-        </div>
 
 
-    </div>
+<!-- 视频区域 -->
+
+<div class="video-container">
 
 
-    <footer>
+<div class="video-title">
 
-        建立这个网站的作者：
-        <a href="https://space.bilibili.com/1857864561" target="_blank">
-            Wednesxuan
-        </a>
+一个视频
 
-    </footer>
+</div>
+
+
+<video id="videoPlayer" controls>
+
+
+<source src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/video/self-made/mcround.mp4"
+type="video/mp4">
+
+
+⚠️ 无法加载视频
+
+
+</video>
 
 
 </div>
 
 
+
+
+
+
+<!-- 小东西区域 -->
+
+<div class="intro">
+
+
+<h2>一些小东西</h2>
+
+
+
+
+
+<div class="tool-item">
+
+
+<div class="button-container">
+
+<a class="home-button douyin-button"
+
+href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BDP/BetterDouyinPlayer1.3.5.18.js"
+
+target="_blank">
+
+Better Douyin Player
+
+</a>
+
+</div>
+
+
+
+<p>
+
+稍微美化了一下抖音详情页播放器的一些界面，
+以及一些其他的小功能
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="tool-item">
+
+
+<div class="button-container">
+
+
+<a class="home-button bilibili-button"
+
+href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BBP/BetterBilibiliPlayer1.0.2.90.js"
+
+target="_blank">
+
+
+Better Bilibili Player
+
+
+</a>
+
+
+</div>
+
+
+<p>
+
+BDP 在 Bilibili 的移植版，
+区别在于有仿 YouTube 播放器的环境效果，
+以及没有下载功能
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<footer>
+
+
+<a href="https://space.bilibili.com/1857864561"
+
+target="_blank">
+
+建立这个网站的作者
+
+</a>
+
+
+</footer>
+
+
+
+
+
+
+</div>
+
+
+
 <script>
-document.addEventListener('DOMContentLoaded', function(){
 
-    const video = document.getElementById('videoPlayer');
+document.addEventListener('DOMContentLoaded',function(){
 
-    video.addEventListener('error', function(){
 
-        console.error(
-            '视频加载失败:',
-            video.error
-        );
+const video=document.getElementById('videoPlayer');
 
-    });
+
+video.addEventListener('error',function(){
+
+
+console.error(
+"视频加载失败:",
+video.error
+);
+
 
 });
+
+
+});
+
+
 </script>
 
 
+
 </body>
+
 </html>
