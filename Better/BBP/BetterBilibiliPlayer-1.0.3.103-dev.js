@@ -2,7 +2,7 @@
 // @name         BetterBilibiliPlayer
 // @namespace    https://www.bilibili.com/
 // @version      1.0.3.103-dev
-// @description  美化B站播放器，修复下载（带进度条），非16:9黑边模糊填充，环境光等。使用缓存Map，彻底解决推荐视频画质无法获取问题。修复编码过滤与下载模式码率显示。
+// @description  对B站播放页的一些界面的美化
 // @author       none
 // @match        *://*.bilibili.com/video/*
 // @match        *://bilibili.com/video/*
