@@ -1,5 +1,0 @@
-BetterBilibiliPlayer-1.0.2.90.js: Update BetterBilibiliPlayer to version 1.0.2.90 and fix
-BetterBilibiliPlayer-1.0.3.31-dev.js: test, add download and some visual effects.
-BetterBilibiliPlayer-1.0.4.7-dev.js: Feat: 音视频合一的MP4下载支持
-BetterBilibiliPlayer-1.0.5.12-dev.js: Feat: Hi-res下载支持
-BetterBilibiliPlayer-1.0.6.2-dev.js: Feat: PGC播放界面适配（PGC下载功能因技术原因暂不支持）
