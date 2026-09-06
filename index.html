@@ -3,407 +3,994 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Wednesxuan的小网站</title>
+<meta name="theme-color" content="#6750A4">
+<title>Wednesxuan 的小网站</title>
 
 <style>
+/* =========================================================
+   Material 3-inspired design system
+   ========================================================= */
+:root {
+    color-scheme: light dark;
+
+    --primary: #6750A4;
+    --on-primary: #FFFFFF;
+    --primary-container: #E9DDFF;
+    --on-primary-container: #21005D;
+
+    --secondary: #625B71;
+    --secondary-container: #E8DEF8;
+    --on-secondary-container: #1D192B;
+
+    --tertiary: #7D5260;
+    --tertiary-container: #FFD8E4;
+    --on-tertiary-container: #31111D;
+
+    --surface: #FFFBFE;
+    --surface-dim: #DED8E1;
+    --surface-container-lowest: #FFFFFF;
+    --surface-container-low: #F7F2FA;
+    --surface-container: #F3EDF7;
+    --surface-container-high: #ECE6F0;
+    --surface-container-highest: #E6E0E9;
+
+    --on-surface: #1C1B1F;
+    --on-surface-variant: #49454F;
+    --outline: #79747E;
+    --outline-variant: #CAC4D0;
+
+    --shadow: rgba(28, 27, 31, .14);
+
+    --radius-xl: 28px;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-pill: 999px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #D0BCFF;
+        --on-primary: #381E72;
+        --primary-container: #4F378B;
+        --on-primary-container: #E9DDFF;
+
+        --secondary: #CCC2DC;
+        --secondary-container: #4A4458;
+        --on-secondary-container: #E8DEF8;
+
+        --tertiary: #EFB8C8;
+        --tertiary-container: #633B48;
+        --on-tertiary-container: #FFD8E4;
+
+        --surface: #141218;
+        --surface-dim: #141218;
+        --surface-container-lowest: #0F0D13;
+        --surface-container-low: #1D1B20;
+        --surface-container: #211F26;
+        --surface-container-high: #2B2930;
+        --surface-container-highest: #36343B;
+
+        --on-surface: #E6E1E5;
+        --on-surface-variant: #CAC4D0;
+        --outline: #938F99;
+        --outline-variant: #49454F;
+
+        --shadow: rgba(0, 0, 0, .32);
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
     margin: 0;
+    min-width: 320px;
+    color: var(--on-surface);
+    background: var(--surface);
+    font-family: Roboto, "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.site-shell {
+    width: min(100% - 32px, 1120px);
+    margin: 0 auto;
+}
+
+/* =========================================================
+   Hero
+   ========================================================= */
+.hero {
+    min-height: min(62vh, 620px);
+    display: flex;
+    align-items: center;
+    padding: 72px 0 56px;
+}
+
+.hero-content {
+    width: min(100%, 850px);
+}
+
+.eyebrow {
+    margin: 0 0 16px;
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.hero h1 {
+    margin: 0;
+    max-width: 820px;
+    color: var(--on-surface);
+    font-size: clamp(3.2rem, 9vw, 7rem);
+    line-height: .98;
+    letter-spacing: -0.065em;
+    font-weight: 750;
+}
+
+.hero-description {
+    max-width: 650px;
+    margin: 28px 0 0;
+    color: var(--on-surface-variant);
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   Shared section rhythm
+   ========================================================= */
+.section {
+    padding: 48px 0 32px;
+}
+
+.section-kicker {
+    margin: 0 0 8px;
+    color: var(--on-surface-variant);
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+}
+
+.section-title {
+    margin: 0;
+    color: var(--on-surface);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+    font-weight: 750;
+}
+
+/* =========================================================
+   Video
+   ========================================================= */
+.video-stage {
+    margin-top: 28px;
+    padding: clamp(16px, 3vw, 28px);
+    border-radius: var(--radius-xl);
+    background: var(--surface-container-low);
+}
+
+.video-label {
+    margin: 0 0 18px;
+    color: var(--on-surface);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.video-stage video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    background: #000;
+}
+
+/* =========================================================
+   Projects
+   One project = one clear M3 elevated surface.
+   No "large card > small card > button card" nesting.
+   ========================================================= */
+.project-list {
+    display: grid;
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.project {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: var(--radius-xl);
+    background: var(--surface-container-low);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.project:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px var(--shadow);
+}
+
+.project-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+.project-identity {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    min-width: 0;
+}
+
+.project-mark {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+}
+
+.project[data-project="BDP"] .project-mark {
+    background: var(--tertiary-container);
+    color: var(--on-tertiary-container);
+}
+
+.project-name {
+    margin: 0;
+    color: var(--on-surface);
+    font-size: clamp(1.55rem, 3vw, 2.15rem);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+    font-weight: 750;
+}
+
+.project-subtitle {
+    margin: 8px 0 0;
+    color: var(--on-surface-variant);
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.project-status {
+    flex: 0 0 auto;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    color: var(--on-secondary-container);
+    background: var(--secondary-container);
+    font-size: .8rem;
+    font-weight: 750;
+}
+
+.project-description {
+    max-width: 780px;
+    margin: 30px 0 0;
+    color: var(--on-surface-variant);
+    font-size: 1.04rem;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   Release metadata + changelog
+   ========================================================= */
+.release-area {
+    margin-top: 32px;
+    padding-top: 26px;
+    border-top: 1px solid var(--outline-variant);
+}
+
+.release-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.meta-chip {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-container-high);
+    color: var(--on-surface-variant);
+    font-size: .86rem;
+    font-weight: 650;
+}
+
+.meta-chip strong {
+    margin-right: 6px;
+    color: var(--on-surface);
+}
+
+.release-heading {
+    margin: 0 0 14px;
+    color: var(--on-surface);
+    font-size: 1.05rem;
+    font-weight: 750;
+}
+
+/* Markdown content is visually part of the same project surface,
+   rather than becoming another full "card". */
+.release-notes {
+    color: var(--on-surface-variant);
+    font-size: .98rem;
+    line-height: 1.8;
+    word-break: break-word;
+}
+
+.release-notes > :first-child {
+    margin-top: 0;
+}
+
+.release-notes > :last-child {
+    margin-bottom: 0;
+}
+
+.release-notes h1,
+.release-notes h2,
+.release-notes h3,
+.release-notes h4 {
+    margin: 1.2em 0 .55em;
+    color: var(--on-surface);
+    line-height: 1.3;
+}
+
+.release-notes h1 { font-size: 1.45rem; }
+.release-notes h2 { font-size: 1.25rem; }
+.release-notes h3 { font-size: 1.1rem; }
+.release-notes h4 { font-size: 1rem; }
+
+.release-notes p {
+    margin: .65em 0;
+}
+
+.release-notes ul,
+.release-notes ol {
+    margin: .7em 0;
+    padding-left: 1.4em;
+}
+
+.release-notes li + li {
+    margin-top: .35em;
+}
+
+.release-notes blockquote {
+    margin: 1em 0;
+    padding: .15em 0 .15em 1em;
+    border-left: 4px solid var(--primary);
+    color: var(--on-surface-variant);
+}
+
+.release-notes hr {
+    height: 1px;
+    margin: 1.2em 0;
+    border: 0;
+    background: var(--outline-variant);
+}
+
+.release-notes code {
+    padding: .15em .38em;
+    border-radius: 6px;
+    background: var(--surface-container-high);
+    color: var(--on-surface);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: .9em;
+}
+
+.release-notes pre {
+    overflow: auto;
+    margin: 1em 0;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    background: var(--surface-container-high);
+}
+
+.release-notes pre code {
     padding: 0;
-    background-color: #f5f5f5;
-    color: #333;
+    background: transparent;
 }
 
-
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
+.release-notes a {
+    color: var(--primary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
 }
 
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
+.release-notes img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
 }
 
-
-h1 {
-    color:#2c3e50;
+.release-notes table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 1em 0;
 }
 
-
-h2 {
-    color:#2c3e50;
-    text-align:center;
+.release-notes th,
+.release-notes td {
+    padding: 10px 12px;
+    border: 1px solid var(--outline-variant);
+    text-align: left;
 }
 
-
-
-.intro,
-.video-container {
-
-    background:white;
-
-    padding:20px;
-
-    border-radius:8px;
-
-    box-shadow:0 2px 4px rgba(0,0,0,0.1);
-
-    margin-bottom:30px;
-
+.release-notes th {
+    color: var(--on-surface);
+    background: var(--surface-container-high);
 }
 
-
-
-.button-container {
-
-    margin:20px 0;
-
+/* =========================================================
+   Actions
+   ========================================================= */
+.project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
 }
 
-
-
-.home-button {
-
-    display:inline-block;
-
-    padding:10px 20px;
-
-    color:white;
-
-    text-decoration:none;
-
-    border-radius:5px;
-
-    font-weight:bold;
-
-    transition:0.3s;
-
+.md-button {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    font: inherit;
+    font-weight: 750;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
 }
 
-
-
-.bilibili-button {
-
-    background:#00aeec;
-
+.md-button:hover {
+    transform: translateY(-1px);
 }
 
-
-.bilibili-button:hover {
-
-    background:#008ccf;
-
+.md-button:active {
+    transform: scale(.98);
 }
 
-
-
-.douyin-button {
-
-    background:#111;
-
-    border:1px solid #ff0050;
-
+.md-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--primary) 40%, transparent);
+    outline-offset: 3px;
 }
 
-
-
-.douyin-button:hover {
-
-    background:#ff0050;
-
+.md-button.primary {
+    color: var(--on-primary);
+    background: var(--primary);
+    box-shadow: 0 2px 6px var(--shadow);
 }
 
-
-
-
-.video-title {
-
-    text-align:center;
-
-    font-size:1.2em;
-
-    color:#2c3e50;
-
-    margin-bottom:15px;
-
+.md-button.primary:hover {
+    box-shadow: 0 5px 12px var(--shadow);
 }
 
-
-
-video {
-
-    width:100%;
-
-    max-width:600px;
-
-    display:block;
-
-    margin:auto;
-
-    border-radius:5px;
-
+.md-button.secondary {
+    color: var(--primary);
+    background: transparent;
+    border-color: var(--outline);
 }
 
-
-
-.tool-item {
-
-    margin:25px 0;
-
+.md-button[aria-disabled="true"] {
+    opacity: .55;
+    pointer-events: none;
 }
 
-
-
-.tool-item p {
-
-    margin-top:10px;
-
-    color:#666;
-
-    font-size:14px;
-
+/* =========================================================
+   Loading / empty / error states
+   ========================================================= */
+.release-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--on-surface-variant);
+    font-size: .95rem;
 }
 
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--outline-variant);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}
 
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 
+.release-error {
+    color: var(--on-surface-variant);
+}
+
+.release-error strong {
+    color: var(--on-surface);
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
 footer {
-
-    text-align:center;
-
-    margin-top:40px;
-
-    color:#999;
-
-    font-size:14px;
-
+    padding: 72px 0 40px;
+    text-align: center;
+    color: var(--on-surface-variant);
+    font-size: .9rem;
 }
-
 
 footer a {
-
-    color:#999;
-
-    text-decoration:none;
-
+    color: inherit;
+    text-decoration: none;
 }
-
 
 footer a:hover {
-
-    text-decoration:underline;
-
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 720px) {
+    .site-shell {
+        width: min(100% - 24px, 1120px);
+    }
 
+    .hero {
+        min-height: 46vh;
+        padding: 54px 0 38px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.8rem, 15vw, 5rem);
+        letter-spacing: -0.055em;
+    }
+
+    .section {
+        padding: 36px 0 22px;
+    }
+
+    .project {
+        padding: 24px;
+    }
+
+    .project-top {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .project-status {
+        align-self: flex-start;
+    }
+
+    .project-actions {
+        flex-direction: column;
+    }
+
+    .md-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 460px) {
+    .project-identity {
+        gap: 14px;
+    }
+
+    .project-mark {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+        border-radius: 16px;
+        font-size: .92rem;
+    }
+}
 </style>
-
 </head>
 
-
 <body>
-
-
-<div class="container">
-
-
-<header>
-
-<h1>Wednesxuan的小网站</h1>
-
-</header>
-
-
-
-<div class="intro">
-
-<p>
-一个小网站，存放着一些小东西
-</p>
-
-</div>
-
-
-
-
-
-<!-- 视频区域 -->
-
-<div class="video-container">
-
-
-<div class="video-title">
-
-一个视频
-
-</div>
-
-
-<video id="videoPlayer" controls>
-
-
-<source src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/video/self-made/mcround.mp4"
-type="video/mp4">
-
-
-⚠️ 无法加载视频
-
-
-</video>
-
-
-</div>
-
-
-
-
-
-
-<!-- 小东西区域 -->
-
-<div class="intro">
-
-
-<h2>一些小东西</h2>
-
-
-
-
-
-<div class="tool-item">
-
-
-<div class="button-container">
-
-<a class="home-button douyin-button"
-
-href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BDP/BetterDouyinPlayer1.3.5.18.js"
-
-target="_blank">
-
-Better Douyin Player
-
-</a>
-
-</div>
-
-
-
-<p>
-
-稍微美化了一下抖音详情页播放器的一些界面，
-以及一些其他的小功能
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="tool-item">
-
-
-<div class="button-container">
-
-
-<a class="home-button bilibili-button"
-
-href="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/Better/BBP/BetterBilibiliPlayer1.0.2.90.js"
-
-target="_blank">
-
-
-Better Bilibili Player
-
-
-</a>
-
-
-</div>
-
-
-<p>
-
-BDP 在 Bilibili 的移植版，
-区别在于有仿 YouTube 播放器的环境效果，
-以及没有下载功能
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
+<main class="site-shell">
+
+    <!-- Hero: use M3 typography hierarchy rather than a card around the title -->
+    <header class="hero">
+        <div class="hero-content">
+            <p class="eyebrow">WEDNESXUAN.GITHUB.IO</p>
+            <h1>Wednesxuan<br>的小网站</h1>
+            <p class="hero-description">
+                一个小网站，存放着一些小东西。
+            </p>
+        </div>
+    </header>
+
+    <!-- Video -->
+    <section class="section" aria-labelledby="video-section-title">
+        <p class="section-kicker">视频</p>
+        <h2 class="section-title" id="video-section-title">一个视频</h2>
+
+        <div class="video-stage">
+            <p class="video-label">自制视频</p>
+            <video id="videoPlayer" controls>
+                <source
+                    src="https://raw.githubusercontent.com/Wednesxuan/wednesxuan.github.io/main/video/self-made/mcround.mp4"
+                    type="video/mp4">
+                ⚠️ 无法加载视频
+            </video>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" aria-labelledby="projects-section-title">
+        <p class="section-kicker">项目</p>
+        <h2 class="section-title" id="projects-section-title">一些小东西</h2>
+
+        <div class="project-list">
+
+            <!-- BDP -->
+            <article class="project" data-project="BDP">
+                <div class="project-top">
+                    <div class="project-identity">
+                        <div class="project-mark" aria-hidden="true">BDP</div>
+                        <div>
+                            <h3 class="project-name">Better Douyin Player</h3>
+                            <p class="project-subtitle">抖音网页播放器增强</p>
+                        </div>
+                    </div>
+                    <span class="project-status">Release</span>
+                </div>
+
+                <p class="project-description">
+                    稍微美化了一下抖音详情页播放器的一些界面，以及一些其他的小功能。
+                </p>
+
+                <div class="release-area">
+                    <div class="release-meta" id="BDP-meta">
+                        <span class="meta-chip">正在获取最新版本</span>
+                    </div>
+
+                    <h4 class="release-heading">最新更新</h4>
+
+                    <div class="release-notes" id="BDP-notes">
+                        <div class="release-loading">
+                            <span class="spinner" aria-hidden="true"></span>
+                            正在从 GitHub 获取最新 Release…
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a
+                            class="md-button primary"
+                            id="BDP-download"
+                            href="https://github.com/Wednesxuan/wednesxuan.github.io/releases?q=BDP"
+                            aria-disabled="true">
+                            获取最新 BDP
+                        </a>
+
+                        <a
+                            class="md-button secondary"
+                            href="https://github.com/Wednesxuan/wednesxuan.github.io/releases?q=BDP"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            查看全部更新
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- BBP -->
+            <article class="project" data-project="BBP">
+                <div class="project-top">
+                    <div class="project-identity">
+                        <div class="project-mark" aria-hidden="true">BBP</div>
+                        <div>
+                            <h3 class="project-name">Better Bilibili Player</h3>
+                            <p class="project-subtitle">Bilibili 网页播放器增强</p>
+                        </div>
+                    </div>
+                    <span class="project-status">Release</span>
+                </div>
+
+                <p class="project-description">
+                    BDP 在 Bilibili 的移植版，区别在于有仿 YouTube 播放器的环境效果，以及没有下载功能。
+                </p>
+
+                <div class="release-area">
+                    <div class="release-meta" id="BBP-meta">
+                        <span class="meta-chip">正在获取最新版本</span>
+                    </div>
+
+                    <h4 class="release-heading">最新更新</h4>
+
+                    <div class="release-notes" id="BBP-notes">
+                        <div class="release-loading">
+                            <span class="spinner" aria-hidden="true"></span>
+                            正在从 GitHub 获取最新 Release…
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a
+                            class="md-button primary"
+                            id="BBP-download"
+                            href="https://github.com/Wednesxuan/wednesxuan.github.io/releases?q=BBP"
+                            aria-disabled="true">
+                            获取最新 BBP
+                        </a>
+
+                        <a
+                            class="md-button secondary"
+                            href="https://github.com/Wednesxuan/wednesxuan.github.io/releases?q=BBP"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            查看全部更新
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+</main>
 
 <footer>
-
-
-<a href="https://space.bilibili.com/1857864561"
-
-target="_blank">
-
-建立这个网站的作者
-
-</a>
-
-
+    <a
+        href="https://space.bilibili.com/1857864561"
+        target="_blank"
+        rel="noopener noreferrer">
+        建立这个网站的作者
+    </a>
 </footer>
 
-
-
-
-
-
-</div>
-
-
+<!--
+    Marked is only used to render the Markdown body already written in GitHub Releases.
+    The release data itself still comes directly from GitHub's API.
+-->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
+(() => {
+    'use strict';
 
-document.addEventListener('DOMContentLoaded',function(){
+    const REPO = 'Wednesxuan/wednesxuan.github.io';
+    const RELEASE_API = `https://api.github.com/repos/${REPO}/releases?per_page=100`;
 
+    const PROJECTS = {
+        BDP: {
+            prefix: 'BDP',
+            fallback: 'https://github.com/Wednesxuan/wednesxuan.github.io/releases?q=BDP'
+        },
+        BBP: {
+            prefix: 'BBP',
+            fallback: 'https://github.com/Wednesxuan/wednesxuan.github.io/releases?q=BBP'
+        }
+    };
 
-const video=document.getElementById('videoPlayer');
+    const video = document.getElementById('videoPlayer');
 
+    video?.addEventListener('error', () => {
+        console.error('视频加载失败:', video.error);
+    });
 
-video.addEventListener('error',function(){
+    function escapeHTML(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
 
+    function formatDate(value) {
+        if (!value) return '';
 
-console.error(
-"视频加载失败:",
-video.error
-);
+        const date = new Date(value);
 
+        if (Number.isNaN(date.getTime())) {
+            return '';
+        }
 
-});
+        return new Intl.DateTimeFormat('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }).format(date);
+    }
 
+    /*
+     * 你的 Release tag 都以 BBP / BDP 开头。
+     *
+     * 因此不再猜文件名，也不会因为两个脚本共用一个仓库而误判：
+     *
+     * BDP... -> Better Douyin Player
+     * BBP... -> Better Bilibili Player
+     *
+     * 直接按 tag_name 分类，然后 Release API 返回顺序中的第一个
+     * 对应项目 Release 就是该项目最新 Release。
+     */
+    function findLatestRelease(releases, prefix) {
+        const upperPrefix = prefix.toUpperCase();
 
-});
+        return releases.find(release => {
+            if (release.draft) return false;
 
+            const tag = String(release.tag_name || '').toUpperCase();
+            return tag.startsWith(upperPrefix);
+        }) || null;
+    }
 
+    /*
+     * 优先寻找 JavaScript asset。
+     * 如果一个 Release 只有一个 asset，则直接使用它。
+     */
+    function findDownloadAsset(release) {
+        const assets = Array.isArray(release.assets) ? release.assets : [];
+
+        if (!assets.length) return null;
+
+        const jsAsset = assets.find(asset => {
+            const name = String(asset.name || '').toLowerCase();
+            return name.endsWith('.js') || name.endsWith('.user.js');
+        });
+
+        return jsAsset || assets[0];
+    }
+
+    function renderMeta(projectId, release) {
+        const meta = document.getElementById(`${projectId}-meta`);
+        if (!meta) return;
+
+        const version = escapeHTML(release.name || release.tag_name || '未知版本');
+        const date = escapeHTML(formatDate(release.published_at || release.created_at));
+
+        meta.innerHTML = `
+            <span class="meta-chip"><strong>最新版本</strong>${version}</span>
+            ${date ? `<span class="meta-chip"><strong>发布于</strong>${date}</span>` : ''}
+        `;
+    }
+
+    function renderNotes(projectId, release) {
+        const notes = document.getElementById(`${projectId}-notes`);
+        if (!notes) return;
+
+        const markdown = String(release.body || '').trim();
+
+        if (!markdown) {
+            notes.innerHTML = '<p>这个版本没有填写更新日志。</p>';
+            return;
+        }
+
+        if (window.marked && typeof window.marked.parse === 'function') {
+            notes.innerHTML = window.marked.parse(markdown, {
+                gfm: true,
+                breaks: true
+            });
+            return;
+        }
+
+        /*
+         * CDN 无法加载时的安全降级：
+         * 至少完整显示 GitHub Release 原始 Markdown，而不是丢失内容。
+         */
+        notes.innerHTML = `<pre><code>${escapeHTML(markdown)}</code></pre>`;
+    }
+
+    function setupDownload(projectId, release) {
+        const button = document.getElementById(`${projectId}-download`);
+        const fallback = PROJECTS[projectId].fallback;
+
+        if (!button) return;
+
+        const asset = findDownloadAsset(release);
+
+        if (!asset?.browser_download_url) {
+            button.href = fallback;
+            button.target = '_blank';
+            button.rel = 'noopener noreferrer';
+            button.removeAttribute('aria-disabled');
+            button.textContent = '查看 Release';
+            return;
+        }
+
+        button.href = asset.browser_download_url;
+        button.removeAttribute('aria-disabled');
+        button.textContent = `获取最新 ${projectId}`;
+    }
+
+    function renderProjectError(projectId) {
+        const notes = document.getElementById(`${projectId}-notes`);
+        const meta = document.getElementById(`${projectId}-meta`);
+        const download = document.getElementById(`${projectId}-download`);
+        const fallback = PROJECTS[projectId].fallback;
+
+        if (meta) {
+            meta.innerHTML = '<span class="meta-chip">暂时无法获取 Release</span>';
+        }
+
+        if (notes) {
+            notes.innerHTML = `
+                <p class="release-error">
+                    <strong>最新更新暂时无法从 GitHub 获取。</strong><br>
+                    你仍然可以通过“查看全部更新”进入对应的 Release 页面。
+                </p>
+            `;
+        }
+
+        if (download) {
+            download.href = fallback;
+            download.target = '_blank';
+            download.rel = 'noopener noreferrer';
+            download.removeAttribute('aria-disabled');
+            download.textContent = `查看 ${projectId} Release`;
+        }
+    }
+
+    async function loadReleases() {
+        const response = await fetch(RELEASE_API, {
+            headers: {
+                'Accept': 'application/vnd.github+json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`GitHub API 请求失败：${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    async function initProjects() {
+        try {
+            const releases = await loadReleases();
+
+            for (const [projectId, config] of Object.entries(PROJECTS)) {
+                const release = findLatestRelease(releases, config.prefix);
+
+                if (!release) {
+                    renderProjectError(projectId);
+                    continue;
+                }
+
+                renderMeta(projectId, release);
+                renderNotes(projectId, release);
+                setupDownload(projectId, release);
+            }
+        } catch (error) {
+            console.warn('无法获取 GitHub Releases：', error);
+
+            Object.keys(PROJECTS).forEach(renderProjectError);
+        }
+    }
+
+    initProjects();
+})();
 </script>
 
-
-
 </body>
-
 </html>
