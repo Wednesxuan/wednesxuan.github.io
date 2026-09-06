@@ -717,7 +717,7 @@ footer a:hover {
                 </div>
 
                 <p class="project-description">
-                    BDP 在 Bilibili 的移植版，区别在于有仿 YouTube 播放器的环境效果，以及没有下载功能。
+                    BDP 在 Bilibili 的移植版，目前主要维护这个。
                 </p>
 
                 <div class="release-area">
@@ -823,17 +823,7 @@ footer a:hover {
         }).format(date);
     }
 
-    /*
-     * 你的 Release tag 都以 BBP / BDP 开头。
-     *
-     * 因此不再猜文件名，也不会因为两个脚本共用一个仓库而误判：
-     *
-     * BDP... -> Better Douyin Player
-     * BBP... -> Better Bilibili Player
-     *
-     * 直接按 tag_name 分类，然后 Release API 返回顺序中的第一个
-     * 对应项目 Release 就是该项目最新 Release。
-     */
+   
     function findLatestRelease(releases, prefix) {
         const upperPrefix = prefix.toUpperCase();
 
@@ -845,10 +835,7 @@ footer a:hover {
         }) || null;
     }
 
-    /*
-     * 优先寻找 JavaScript asset。
-     * 如果一个 Release 只有一个 asset，则直接使用它。
-     */
+    
     function findDownloadAsset(release) {
         const assets = Array.isArray(release.assets) ? release.assets : [];
 
@@ -894,10 +881,7 @@ footer a:hover {
             return;
         }
 
-        /*
-         * CDN 无法加载时的安全降级：
-         * 至少完整显示 GitHub Release 原始 Markdown，而不是丢失内容。
-         */
+        
         notes.innerHTML = `<pre><code>${escapeHTML(markdown)}</code></pre>`;
     }
 
