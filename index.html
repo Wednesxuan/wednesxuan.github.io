@@ -8,7 +8,7 @@
 
 <style>
 /* =========================================================
-   Material 3-inspired design system
+   Material 3 风格设计系统
    ========================================================= */
 :root {
     color-scheme: light dark;
@@ -107,7 +107,7 @@ a {
 }
 
 /* =========================================================
-   Hero
+   首屏区域
    ========================================================= */
 .hero {
     min-height: min(62vh, 620px);
@@ -147,7 +147,7 @@ a {
 }
 
 /* =========================================================
-   Shared section rhythm
+   通用区块间距
    ========================================================= */
 .section {
     padding: 48px 0 32px;
@@ -171,7 +171,7 @@ a {
 }
 
 /* =========================================================
-   Video
+   视频区块
    ========================================================= */
 .video-stage {
     margin-top: 28px;
@@ -196,9 +196,8 @@ a {
 }
 
 /* =========================================================
-   Projects
-   One project = one clear M3 elevated surface.
-   No "large card > small card > button card" nesting.
+   项目列表
+   每个项目使用独立的 M3 抬升表面，无嵌套卡片。
    ========================================================= */
 .project-list {
     display: grid;
@@ -291,7 +290,7 @@ a {
 }
 
 /* =========================================================
-   Release metadata + changelog
+   发布元信息与更新日志
    ========================================================= */
 .release-area {
     margin-top: 32px;
@@ -330,8 +329,7 @@ a {
     font-weight: 750;
 }
 
-/* Markdown content is visually part of the same project surface,
-   rather than becoming another full "card". */
+/* 更新日志内容视觉上属于项目表面的一部分，而非独立卡片 */
 .release-notes {
     color: var(--on-surface-variant);
     font-size: .98rem;
@@ -444,7 +442,7 @@ a {
 }
 
 /* =========================================================
-   Actions
+   操作按钮
    ========================================================= */
 .project-actions {
     display: flex;
@@ -503,7 +501,7 @@ a {
 }
 
 /* =========================================================
-   Loading / empty / error states
+   加载 / 空状态 / 错误状态
    ========================================================= */
 .release-loading {
     display: flex;
@@ -535,7 +533,7 @@ a {
 }
 
 /* =========================================================
-   Footer
+   页脚
    ========================================================= */
 footer {
     padding: 72px 0 40px;
@@ -556,7 +554,7 @@ footer a:hover {
 }
 
 /* =========================================================
-   Responsive
+   响应式适配
    ========================================================= */
 @media (max-width: 720px) {
     .site-shell {
@@ -618,7 +616,7 @@ footer a:hover {
 <body>
 <main class="site-shell">
 
-    <!-- Hero: use M3 typography hierarchy rather than a card around the title -->
+    <!-- 首屏：使用 M3 排版层次，标题未使用卡片包裹 -->
     <header class="hero">
         <div class="hero-content">
             <p class="eyebrow">WEDNESXUAN.GITHUB.IO</p>
@@ -629,7 +627,7 @@ footer a:hover {
         </div>
     </header>
 
-    <!-- Video -->
+    <!-- 视频区块 -->
     <section class="section" aria-labelledby="video-section-title">
         <p class="section-kicker">视频</p>
         <h2 class="section-title" id="video-section-title">一个视频</h2>
@@ -645,7 +643,7 @@ footer a:hover {
         </div>
     </section>
 
-    <!-- Projects -->
+    <!-- 项目区块 -->
     <section class="section" aria-labelledby="projects-section-title">
         <p class="section-kicker">项目</p>
         <h2 class="section-title" id="projects-section-title">一些小东西</h2>
@@ -769,8 +767,8 @@ footer a:hover {
 </footer>
 
 <!--
-    Marked is only used to render the Markdown body already written in GitHub Releases.
-    The release data itself still comes directly from GitHub's API.
+    Marked 仅用于渲染 GitHub Release 中已存在的 Markdown 正文。
+    Release 数据本身仍直接来自 GitHub API。
 -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -823,19 +821,34 @@ footer a:hover {
         }).format(date);
     }
 
-   
+    /*
+     * 过滤出所有非草案且标签以指定前缀开头的发布版本，
+     * 按发布时间降序排序，返回最新版本（包括预发布版）。
+     * 优先使用 published_at，若缺失则使用 created_at。
+     */
     function findLatestRelease(releases, prefix) {
         const upperPrefix = prefix.toUpperCase();
 
-        return releases.find(release => {
+        const matched = releases.filter(release => {
             if (release.draft) return false;
-
             const tag = String(release.tag_name || '').toUpperCase();
             return tag.startsWith(upperPrefix);
-        }) || null;
+        });
+
+        if (!matched.length) return null;
+
+        matched.sort((a, b) => {
+            const dateA = new Date(a.published_at || a.created_at);
+            const dateB = new Date(b.published_at || b.created_at);
+            return dateB - dateA;
+        });
+
+        return matched[0];
     }
 
-    
+    /*
+     * 优先寻找 JavaScript asset（.js 或 .user.js），若无则取第一个 asset。
+     */
     function findDownloadAsset(release) {
         const assets = Array.isArray(release.assets) ? release.assets : [];
 
@@ -849,11 +862,23 @@ footer a:hover {
         return jsAsset || assets[0];
     }
 
+    /*
+     * 更新项目右上角的状态标签：若为预发布版则显示 "Pre-release"，否则显示 "Release"。
+     */
+    function updateProjectStatus(projectId, isPrerelease) {
+        const statusEl = document.querySelector(`.project[data-project="${projectId}"] .project-status`);
+        if (!statusEl) return;
+        statusEl.textContent = isPrerelease ? 'Pre-release' : 'Release';
+    }
+
     function renderMeta(projectId, release) {
         const meta = document.getElementById(`${projectId}-meta`);
         if (!meta) return;
 
-        const version = escapeHTML(release.name || release.tag_name || '未知版本');
+        let version = escapeHTML(release.name || release.tag_name || '未知版本');
+        if (release.prerelease) {
+            version += ' (预发布版)';
+        }
         const date = escapeHTML(formatDate(release.published_at || release.created_at));
 
         meta.innerHTML = `
@@ -881,7 +906,6 @@ footer a:hover {
             return;
         }
 
-        
         notes.innerHTML = `<pre><code>${escapeHTML(markdown)}</code></pre>`;
     }
 
@@ -921,7 +945,7 @@ footer a:hover {
             notes.innerHTML = `
                 <p class="release-error">
                     <strong>最新更新暂时无法从 GitHub 获取。</strong><br>
-                    你仍然可以通过“查看全部更新”进入对应的 Release 页面。
+                    仍可通过“查看全部更新”进入对应的 Release 页面。
                 </p>
             `;
         }
@@ -933,6 +957,10 @@ footer a:hover {
             download.removeAttribute('aria-disabled');
             download.textContent = `查看 ${projectId} Release`;
         }
+
+        // 错误时重置状态标签为默认 "Release"
+        const statusEl = document.querySelector(`.project[data-project="${projectId}"] .project-status`);
+        if (statusEl) statusEl.textContent = 'Release';
     }
 
     async function loadReleases() {
@@ -961,6 +989,7 @@ footer a:hover {
                     continue;
                 }
 
+                updateProjectStatus(projectId, release.prerelease);
                 renderMeta(projectId, release);
                 renderNotes(projectId, release);
                 setupDownload(projectId, release);
